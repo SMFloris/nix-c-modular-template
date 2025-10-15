@@ -1,4 +1,4 @@
-# 🧱 Nix C/C++ Module Template
+# 🧱 Nix C/C++ Modular Template
 
 A **modular C/C++ project template** built around **Nix** — designed for reproducibility, modularity, and simplicity. It lets you write structured C/C++ applications with **internal or external modules** using **Nix** as your package manager.
 
