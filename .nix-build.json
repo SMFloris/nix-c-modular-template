@@ -1,0 +1,18 @@
+{
+  "name": "binary-image-analyse",
+  "nixPkgs": ["raylib"],
+  "pkgConfigNames": ["raylib", "imago2"],
+  "makeFlags": {
+      "release": {
+          "cflags": "-std=c23 -O2 -Wall -Wextra -Wpedantic",
+          "ldlibs": "-lm",
+          "cppflags": ""
+      },
+      "debug": {
+          "cflags": "-std=c23 -O0 -g3 -Wall -Wextra -Wpedantic -fsanitize=address,undefined -fno-omit-frame-pointer",
+          "ldlibs": "-lm",
+          "cppflags": ""
+      }
+  }
+}
+
