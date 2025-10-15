@@ -43,8 +43,6 @@ Tip: bear -- make -j16
 $nix-shell: > make
 ==> Building modules/rgridlayout/
 ==> NIXMODE=nix-shell, building modules/rgridlayout/
-🚀 C23 dev shell ready (release, Bear + clangd)
- > Tip: bear -- make -j16
 🔍 Checking pkg-config libraries...
 ✅ raylib found.
 make[1]: Entering directory '/home/flow/Projects/nix-c-template/modules/rgridlayout'
