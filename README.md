@@ -20,21 +20,43 @@ It’s intended to be:
 
 ---
 
-## 🎯 Goals
+## ⚡ Quickstart
 
-1. ✅ Use **Make** and existing **Nix** utilities (Make is eternal).
-2. ✅ Modules expose a **pkg-config** interface.
+In one simple swoop, this template/example does the following:
 
-   * If one doesn’t, you can patch it via Nix easily.
-3. ✅ Modules can depend on other modules.
-4. ✅ Pull external modules from **any source** (`nixpkgs`, `git`, `svn`, `tar`, etc).
-5. ✅ Link modules however you want.
-6. ✅ Cross-compile for **any platform**.
-7. ✅ Run tests for both **main app** and **modules**.
-8. ✅ `nix-shell` gives you a full dev environment instantly.
-9. ✅ One command builds everything.
-10. ✅ Clean, hierarchical folder structure.
-11. ✅ **clangd** works out of the box via `bear`.
+* downloads, builds and links libimago from github
+* uses raylib from nixpkgs and links it
+* uses an internal module (rgridlayout) and statically links it
+* both main app and internal module use raylib -> don't worry nix makes sure it is only downloaded once
+
+The example itself, all it does is some simple binary-image analysis on pngs.
+
+```bash
+$: > git clone https://github.com/smfloris/nix-c-modular-template
+$: > cd nix-c-modular-template
+$: > nix-shell
+🚀 C23 dev shell ready (release, Bear + clangd)
+Tip: bear -- make -j16
+🔍 Checking pkg-config libraries...
+✅ raylib found.
+✅ imago2 found.
+$nix-shell: > make
+==> Building modules/rgridlayout/
+==> NIXMODE=nix-shell, building modules/rgridlayout/
+🚀 C23 dev shell ready (release, Bear + clangd)
+ > Tip: bear -- make -j16
+🔍 Checking pkg-config libraries...
+✅ raylib found.
+make[1]: Entering directory '/home/flow/Projects/nix-c-template/modules/rgridlayout'
+ar rcs build/librgridlayout.a build/rgridlayout.o
+✅ Built static library: build/librgridlayout.a
+make[1]: Leaving directory '/home/flow/Projects/nix-c-template/modules/rgridlayout'
+gcc build/binary_images.o build/main.o modules/rgridlayout//build/librgridlayout.a  -lm -L/nix/store/v172zs5wdv59gqjpmkl5mrz4530x1g8j-raylib-5.5/lib -L/nix/store/fyylpf9wcvagszxs3jzyi4il8aygpvd2-libimago-2.3/lib -lraylib -limago -o build/binary-image-analyse
+✅ Built executable: build/binary-image-analyse
+$nix-shell: > ./build/binary-image-analyse ./img1.png ./img2.png ./img3.png
+```
+
+![output](https://private-user-images.githubusercontent.com/3417174/501736501-27c0ecd8-6671-4a7e-83a2-03255d1afe26.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjA1NjU3OTAsIm5iZiI6MTc2MDU2NTQ5MCwicGF0aCI6Ii8zNDE3MTc0LzUwMTczNjUwMS0yN2MwZWNkOC02NjcxLTRhN2UtODNhMi0wMzI1NWQxYWZlMjYucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI1MTAxNSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNTEwMTVUMjE1ODEwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NmZhYzI0NmE0MWNmYTJmZTNiOTg5MmRjNWU5OGIxZTJjMTg2Mzk2OGIxNzQ4OGNhNDUxNWYxYjRkYmEwNGQxNSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QifQ.SYXU4Ck1ZeGpwBdjzlba9NynMAlsRGIZZoSP3CiRW4o)
 
 ---
 
@@ -211,17 +233,6 @@ Nix builds them both, exposes their headers and pkg-config metadata, and links a
 ## 🌍 Cross Compilation
 
 `TODO: docs`
-
----
-
-## ⚡ Quickstart
-
-```bash
-git clone https://github.com/smfloris/nix-c-modular-template
-cd nix-cpp-modular-template
-nix-shell
-make
-```
 
 ---
 
