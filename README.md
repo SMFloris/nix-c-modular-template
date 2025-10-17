@@ -20,16 +20,18 @@ It’s intended to be:
 
 ---
 
-## ⚡ Quickstart
+## ⚡ Example Overview
 
-In one simple swoop, this template/example does the following:
+In one simple swoop, this example does the following:
 
-* downloads, builds and links libimago from github
+* downloads, builds and links [libimago](https://github.com/jtsiomb/libimago) from a github repository
 * uses raylib from nixpkgs and links it
 * uses an internal module (rgridlayout) and statically links it
 * both main app and internal module use raylib -> don't worry nix makes sure it is only downloaded once
 
 The example itself, all it does is some simple binary-image analysis on pngs.
+Notice that both the main app and internal module have the same layout. This is intended. You can thus, make all your code reusable by using the same template over and over again.
+You can even use git submodules so that your modules can live in their own separate repositories.
 
 ```bash
 $: > git clone https://github.com/smfloris/nix-c-modular-template
@@ -58,6 +60,27 @@ $nix-shell: > ./build/binary-image-analyse ./img1.png ./img2.png ./img3.png
 
 ---
 
+## Quickstart
+
+Copy or clone this repo.
+
+Follow the folder/file structure. At a minimum, you need:
+
+```bash
+├── modules/
+├── include/
+│   └── header.h
+├── src/
+│   └── main.c
+├── Makefile
+├── .nix-build.json
+└── default.nix
+```
+
+Any other module you want, has the same file/folder structure.
+
+---
+
 ## 🗂️ Folder Structure
 
 ```bash
@@ -70,9 +93,9 @@ $nix-shell: > ./build/binary-image-analyse ./img1.png ./img2.png ./img3.png
 │   │   ├── Makefile
 │   │   ├── .nix-build.json
 │   │   ├── default.nix
-│   └── external-module.nix
+│   └── libimago.nix
 ├── include/
-│   └── header.h
+│   └── binary_images.h
 ├── src/
 │   └── main.c
 ├── Makefile
@@ -89,8 +112,8 @@ $nix-shell: > ./build/binary-image-analyse ./img1.png ./img2.png ./img3.png
 This is the Nix entry point.
 It defines:
 
-* Build dependencies (via `nixPkgs` and `importedPkgs`)
-* Internal modules (recursively loaded)
+* Build dependencies (via `nixPkgs` and `importedPkgs` from .nix-build.json)
+* Internal modules (recursively loaded - same template)
 * Compiler/linker flags from `.nix-build.json`
 * A reproducible derivation using `stdenv.mkDerivation`
 
@@ -131,9 +154,11 @@ Here, `raylib` is from nixpkgs and `imago2` is a library built from a github rep
 
 ---
 
-### `external-module.nix`
+### `libimago.nix` - external sources made simple
 
 Defines an **external module derivation**.
+
+You can do the same with any other external source.
 Example:
 
 ```nix
@@ -145,8 +170,6 @@ pkgs.fetchFromGitHub {
   sha256 = "sha256-value";
 }
 ```
-
-You can import it in your main `default.nix` and treat it like any other nixpkgs module.
 
 ---
 
@@ -170,7 +193,7 @@ Each module Makefile should produce a `.a` or `.so` library.
 nix-build
 ```
 
-Builds everything, producing the final binary in `result/bin/`.
+Builds everything, including any modules, producing the final binary in `result/bin/`.
 
 ---
 
